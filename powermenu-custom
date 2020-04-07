@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Created by TheCrether
+
+MENU="$(rofi -sep "|" -dmenu -i -p 'Action' -width 25 -hide-scrollbar -line-padding 4 -padding 20 -lines 7 -matching fuzzy <<< " Lock| Logout| Reboot| Shutdown| Hibernate| Suspend")"
+	case "$MENU" in
+		*Lock) i3lock -i ~/Pictures/background/crethernet_bg.png;;
+		*Logout) $HOME/scripts/logout.sh;;
+		*Reboot) systemctl reboot;;
+		*Shutdown) systemctl -i poweroff;;
+		*Hibernate) systemctl hibernate;;
+		*Suspend) systemctl suspend;;
+	esac
