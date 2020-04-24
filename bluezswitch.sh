@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BLUEZCARD=`pactl list cards short | egrep -o bluez.*[[:space:]]`
 pactl set-card-profile $BLUEZCARD a2dp_sink
