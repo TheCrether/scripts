@@ -7,4 +7,4 @@ export SUDO_ASKPASS=/usr/bin/ksshaskpass
 echo 512000 | sudo tee -a /proc/sys/fs/inotify/max_user_watches
 
 # setup locking with xss-lock
-$HOME/scripts/autolocking.sh
+$HOME/scripts/autolock.sh
