@@ -18,7 +18,7 @@ def get_public_ip():
         print('[!] WTFISMYIP: Error - Unexpected response!')
 
 
-def err(msg, text):
+def err(msg, text, r):
     print(msg)
     with open('dyn-dns.log', 'a') as f:
         f.write('[{}]: ERROR UPDATING "{}" {}\n'.format(
@@ -37,20 +37,20 @@ def update_dns_record(ip):
                         headers={'Authorization': "Bearer " + CONF["auth_token"]}).text)
             if "code" in domains and domains['code'] == "not_found":
                 err('[!] DYN-DNS: Error - Could not update DNS record ... (Logging response) ',
-                    json.dumps(domains))
+                    json.dumps(domains), r)
                 return
             rec = next(filter(lambda rec: rec["name"] ==
                        r["name"], domains['records']), None)
             if rec == None:
                 err(
-                    f'[!] DYN-DNS: Error - Could not find record with name "{r["name"]} ... (Logging response)"', domains)
+                    f'[!] DYN-DNS: Error - Could not find record with name "{r["name"]} ... (Logging response)"', domains, r)
                 return
             res = req.patch(f'https://vercel.com/api/v4/domains/records/{rec["id"]}',
                             headers={'Content-Type': 'application/json',
                                      'Authorization': "Bearer " + CONF["auth_token"]},
                             json={'name': r['name'], 'ttl': r['ttl'], 'value': ip, 'type': 'A'})
             if res.status_code != 200:
-                err('[!] DYN-DNS: Error - Could not update DNS record ... (Logging response) ', res.text)
+                err('[!] DYN-DNS: Error - Could not update DNS record ... (Logging response) ', res.text, r)
             else:
                 print(
                     '[+] Updated DNS-Record "{}" ... (new-ip: {})'.format(r['name'], ip))
