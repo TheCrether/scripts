@@ -43,7 +43,7 @@ def update_dns_record(ip):
                        r["name"], domains['records']), None)
             if rec == None:
                 err(
-                    f'[!] DYN-DNS: Error - Could not find record with name "{r["name"]} ... (Logging response)"', domains, r)
+                    f'[!] DYN-DNS: Error - Could not find record with name "{r["name"]} ... (Logging response)"', json.dumps(domains), r)
                 return
             res = req.patch(f'https://vercel.com/api/v4/domains/records/{rec["id"]}',
                             headers={'Content-Type': 'application/json',
@@ -65,12 +65,12 @@ CONF = {}
 
 def main():
     global CONF
-    with open('./dyn-conf.json', 'r') as f:
-        CONF = json.loads(f.read())
 
     ip = ''
     try:
         while True:
+            with open('./dyn-conf.json', 'r') as f:
+                CONF = json.loads(f.read())
             cuip = get_public_ip()
             if cuip != None and cuip != ip:
                 update_dns_record(cuip)
