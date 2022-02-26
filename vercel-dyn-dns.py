@@ -6,16 +6,18 @@ import json
 import requests as req
 from time import sleep
 from datetime import datetime
+from subprocess import check_output, STDOUT
 
 
 def get_public_ip():
-    try:
-        status = json.loads(req.get('https://wtfismyip.com/json').text)
-        return status['YourFuckingIPAddress']
-    except req.exceptions.ConnectionError:
-        print('[!] WTFISMYIP: Error - Connection failed!')
-    except json.JSONDecodeError:
-        print('[!] WTFISMYIP: Error - Unexpected response!')
+    return check_output("bash fritzbox-get-wan-ip.sh 10.0.0.1", stderr=STDOUT, shell=True).decode().strip()
+    # try:
+    #     status = json.loads(req.get('https://wtfismyip.com/json').text)
+    #     return status['YourFuckingIPAddress']
+    # except req.exceptions.ConnectionError:
+    #     print('[!] WTFISMYIP: Error - Connection failed!')
+    # except json.JSONDecodeError:
+    #     print('[!] WTFISMYIP: Error - Unexpected response!')
 
 
 def err(msg, text, r):
@@ -64,6 +66,7 @@ CONF = {}
 
 
 def main():
+    print(get_public_ip())
     global CONF
 
     ip = ''
