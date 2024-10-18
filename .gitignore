@@ -1,5 +1,6 @@
 goland
 idea
 .idea
-dyn-conf.json
-dyn-dns.log
+.env
+vercel-dyn-dns/dyn-conf.json
+vercel-dyn-dns/dyn-dns.log

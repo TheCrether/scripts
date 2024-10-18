@@ -1,0 +1,15 @@
+[Unit]
+Description=Automated Vercel DynDNS with FritzBox
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=crether
+WorkingDirectory=/home/crether/scripts/vercel-dyn-dns
+ExecStart=/usr/bin/env python3 vercel-dyn-dns.py
+
+[Install]
+WantedBy=multi-user.target
